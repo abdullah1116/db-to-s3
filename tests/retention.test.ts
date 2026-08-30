@@ -5,7 +5,7 @@ import { classify, planPrune, parseKeyDate } from "../src/retention.ts";
 const NOW = new Date("2026-08-30T12:00:00Z");
 
 function key(date: string): string {
-  return `/appdb/${date}/dump.sql.zst`;
+  return `appdb/${date}/dump.sql.zst`;
 }
 
 describe("parseKeyDate", () => {
@@ -14,10 +14,10 @@ describe("parseKeyDate", () => {
   });
 
   test("returns null for malformed keys", () => {
-    expect(parseKeyDate("/appdb/not-a-date/dump.sql.zst")).toBeNull();
-    expect(parseKeyDate("/appdb/2026-13-99/dump.sql.zst")).toBeNull();
+    expect(parseKeyDate("appdb/not-a-date/dump.sql.zst")).toBeNull();
+    expect(parseKeyDate("appdb/2026-13-99/dump.sql.zst")).toBeNull();
     expect(parseKeyDate("garbage")).toBeNull();
-    expect(parseKeyDate("/appdb/2026-08-30/")).toBeNull();
+    expect(parseKeyDate("appdb/2026-08-30/")).toBeNull();
   });
 });
 
@@ -59,7 +59,7 @@ describe("classify", () => {
   });
 
   test("skips malformed keys (never prunes)", () => {
-    expect(classify("/appdb/not-a-date/dump.sql.zst", NOW, 30, 0)).toBe("skip");
+    expect(classify("appdb/not-a-date/dump.sql.zst", NOW, 30, 0)).toBe("skip");
     expect(classify("garbage", NOW, 30, 0)).toBe("skip");
   });
 });

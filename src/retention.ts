@@ -1,7 +1,7 @@
 /**
  * Retention engine — pure logic, no I/O.
  *
- * S3 is the source of truth. Object keys are `/{database_name}/YYYY-MM-DD/dump.sql.zst`.
+ * S3 is the source of truth. Object keys are `{database_name}/YYYY-MM-DD/dump.sql.zst`.
  * The date embedded in the KEY is authoritative (not LastModified), so retention is
  * deterministic and timezone-safe (all comparisons in UTC).
  *
@@ -12,7 +12,7 @@
 
 export type RetentionAction = "keep" | "prune" | "skip";
 
-const KEY_RE = /^\/([^/]+)\/(\d{4}-\d{2}-\d{2})\/dump\.sql\.zst$/;
+const KEY_RE = /^([^/]+)\/(\d{4}-\d{2}-\d{2})\/dump\.sql\.zst$/;
 
 /**
  * Extract the `YYYY-MM-DD` date from a backup key, or null if the key is malformed.
