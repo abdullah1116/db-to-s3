@@ -1,7 +1,7 @@
 import { loadConfig, type AppConfig } from "./config.ts";
 import { checkDbReachable, checkS3Reachable } from "./preflight.ts";
 import { runPipeline, buildKey, MIN_VALID_BYTES, type PipelineResult } from "./pipeline.ts";
-import { verifyObject } from "./integrity.ts";
+import { verifyObject, type IntegrityResult } from "./integrity.ts";
 import { planPrune } from "./retention.ts";
 import { SignalManager } from "./signals.ts";
 import { S3Client } from "bun";
@@ -64,7 +64,18 @@ async function main(): Promise<number> {
     return 1;
   }
 
-  const integrity = await verifyObject(s3, key, result.compressedBytes);
+  let integrity: IntegrityResult;
+  try {
+    integrity = await verifyObject(s3, key, result.compressedBytes);
+  } catch (err) {
+    console.error(`[verify] stat failed: ${(err as Error).message}`);
+    try {
+      await s3.delete(key);
+    } catch {
+      // best effort
+    }
+    return 1;
+  }
   if (!integrity.ok) {
     console.error(`[verify] ${integrity.reason}`);
     try {
