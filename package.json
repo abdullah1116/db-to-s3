@@ -1,0 +1,13 @@
+{
+  "name": "mariadb-s3-backup",
+  "version": "1.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "bun test",
+    "start": "bun run src/main.ts"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
