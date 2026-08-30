@@ -1,0 +1,17 @@
+services:
+  mariadb-backup:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    image: mariadb-s3-backup:latest
+    env_file: .env
+    read_only: true
+    tmpfs:
+      - /tmp
+    deploy:
+      resources:
+        limits:
+          memory: 1500M
+        reservations:
+          memory: 512M
+    restart: "no"

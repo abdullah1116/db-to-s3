@@ -1,0 +1,7 @@
+[Unit]
+Description=Notify MariaDB backup failure for %i
+
+[Service]
+Type=oneshot
+EnvironmentFile=/opt/mariadb-backup/.env
+ExecStart=/opt/mariadb-backup/notify.sh %i

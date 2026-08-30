@@ -1,0 +1,16 @@
+[Unit]
+Description=MariaDB to S3 backup (one-shot)
+After=network-online.target
+Wants=network-online.target
+OnFailure=backup-failure-notify@%n.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/mariadb-backup
+ExecStartPre=/usr/bin/docker compose pull --quiet
+ExecStart=/usr/bin/docker compose up --exit-code-from mariadb-backup --abort-on-container-exit
+ExecStopPost=/usr/bin/docker compose down --volumes --remove-orphans
+TimeoutStartSec=2700
+
+[Install]
+WantedBy=multi-user.target
