@@ -1,6 +1,5 @@
 .env
 node_modules/
-.omo/evidence/
-.omo/run-continuation/
+.omo/
 .opencode/goals/
 *.log
